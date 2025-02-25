@@ -20,8 +20,12 @@ public class Game {
                System.out.println();
                    System.out.println("Area ");
                System.out.println();
-                   System.out.println("1 - SafeHouse");
-                   System.out.println("2- ToolStore");
+               System.out.println("1 - SafeHouse");
+
+               System.out.println("2- ToolStore");
+               System.out.println("3- Cave ");
+               System.out.println("4 - Forest");
+               System.out.println("5 - River");
                System.out.println("0- Exit");
                    System.out.println("Enter your choice");
                    int choice = input.nextInt();
@@ -35,8 +39,19 @@ public class Game {
                        case 2 :
                            location = new ToolStore(player);
                            break;
+                       case 3 :
+                           location = new Cave(player);
+                           break;
+                       case 4:
+                           location = new Forest(player);
+                           break;
+                       case 5:
+                           location = new River(player);
+                           break;
+
                        default:
-                           location = new SafeHouse(player);
+                           System.out.println("Enter a location");
+                        //   location = new SafeHouse(player);
 
                    }
 
