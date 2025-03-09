@@ -5,6 +5,7 @@ public abstract class Location {
     private String name;
     public static Scanner input = new Scanner(System.in);
 
+
     public Location( Player player, String name) {
         this.name = name;
         this.player = player;

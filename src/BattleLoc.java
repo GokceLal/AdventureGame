@@ -4,12 +4,45 @@ public class BattleLoc extends Location{
     private Obstacle obstacle;
     private String  award;
     private int maxObstacle;
+    private int randomEverone;
 
-    public BattleLoc(Player player, String name, Obstacle obstacle, String award, int maxObstacle) {
+    private boolean isWin = false;
+
+
+
+    public BattleLoc(Player player, String name, Obstacle obstacle, String award, int maxObstacle, boolean isWin) {
         super(player, name);
         this.obstacle = obstacle;
         this.award = award;
         this.maxObstacle = maxObstacle;
+        this.isWin = isWin;
+
+    }
+
+
+//
+//    public boolean hasEnteredArea(){
+//        HashMap<String, Integer> areas = new HashMap<>();
+//        areas.put("SafeHouse", 1);
+//        areas.put("ToolStore", 2);
+//        areas.put("Cave", 3);
+//        areas.put("Forest", 4);
+//        areas.put("River", 5);
+//
+//        int areaNumber = areas.get(this.getName());
+//        if (areaNumber == 1 || areaNumber == 2 || areaNumber == 3 || areaNumber == 4 || areaNumber == 5){
+//            System.out.println("You entered " + this.getName());
+//            return true;
+//        }
+//
+//
+//        return true;
+//    }
+    public void isAreaWin(int obsNum) {
+        if (obsNum == 0){
+            System.out.println("This area have " +obsNum+ " you  killed them" );
+
+        }
 
     }
 
@@ -19,14 +52,22 @@ public class BattleLoc extends Location{
         System.out.println("Now you are here" + this.getName());
         System.out.println("Be Careful! " + this.getObstacle().getName() + " may be " + obsNumber +" number");
         System.out.println("If you want to battle <B> or leave <L>");
+        System.out.println(this.getObstacle().getAward());
         String selectCase = input.next();
         selectCase = selectCase.toUpperCase();
-        if(selectCase.equals("B")&& combat(obsNumber)){
+        if(selectCase.equals("B") && combat(obsNumber)){
 
                 System.out.println(this.getName() + " you win ");
-                return true;
+            this.isWin = true;
+            if(selectCase.equals("L")||!combat(obsNumber)){
+                System.out.println("You left the battle.");
+                return false;
+            }
+            return true;
 
         }
+
+
         if (this.getPlayer().getHealthy() <= 0 ){
             System.out.println("You are die");
             return  false;
@@ -63,12 +104,23 @@ public class BattleLoc extends Location{
                     return false;
                 }
             }
-
             if(this.getObstacle().getHealth() < this.getPlayer().getHealthy()){
                 System.out.println("Enemy failed");
-                System.out.println("You win "+ this.getObstacle().getAward());
+                System.out.println("You win "+ this.getObstacle().getAward() + " award");
                 this.getPlayer().setMoney(this.getPlayer().getMoney() + this.getObstacle().getAward());
                 System.out.println("Your total money "+ this.getPlayer().getMoney());
+                System.out.println("You win this area " );
+                isWin = true;
+            }
+            else if(this.getObstacle().getHealth() > this.getPlayer().getHealthy()){
+                System.out.println("You failed");
+                System.out.println("You lose "+ this.getObstacle().getAward() + " award");
+                this.getPlayer().setMoney(this.getPlayer().getMoney() - this.getObstacle().getAward());
+                System.out.println("Your total money "+ this.getPlayer().getMoney());
+                System.out.println("You lose this area " );
+
+
+
             }
             else {
                 return false;
@@ -111,6 +163,7 @@ public class BattleLoc extends Location{
         return r.nextInt(this.getMaxObstacle()) + 1;
     }
 
+
     public int getMaxObstacle() {
         return maxObstacle;
     }
@@ -127,6 +180,14 @@ public class BattleLoc extends Location{
         this.obstacle = obstacle;
     }
 
+    public int getRandomEverone() {
+        return randomEverone;
+    }
+
+    public void setRandomEverone(int randomEverone) {
+        this.randomEverone = randomEverone;
+    }
+
     public String getAward() {
         return award;
     }
@@ -134,4 +195,14 @@ public class BattleLoc extends Location{
     public void setAward(String award) {
         this.award = award;
     }
+
+    public boolean isWin() {
+        return isWin;
+    }
+
+    public void setWin(boolean win) {
+        isWin = win;
+    }
+
+
 }
