@@ -1,11 +1,16 @@
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
 public class Game {
-        private Scanner input = new Scanner(System.in);
+    private Scanner input = new Scanner(System.in);
     private Set<String> completedAreas = new HashSet<>();
+    private Set<String> wonAwards = new HashSet<>();
 
+    public Set<String> getWonAwards() {
+        return wonAwards;
+    }
 
     public void start(){
             System.out.println("Welcome to Adventure Game !");
@@ -50,6 +55,8 @@ public class Game {
                            break;
                        case 3 :
                            if (completedAreas.contains("Cave")) {
+                               System.out.println("You win water ");
+                               player.addAward("Water");
                                System.out.println("You have already won this area! Choose another one.");
                                location = null;
                            } else {
@@ -59,6 +66,7 @@ public class Game {
                        case 4:
                            if (completedAreas.contains("Forest")) {
                                System.out.println("You have already won this area! Choose another one.");
+                               player.addAward("Food");
                                location = null;
 
                            }
@@ -67,9 +75,24 @@ public class Game {
                            }
                           break;
                        case 5:
-                           location = new River(player);
+                           if(completedAreas.contains("Firewood")){
+                               System.out.println("You have already won this area! Choose another one.");
+                               player.addAward("Firewood");
+                               location = null;
+                           }
+                           else{
+                               location = new River(player);
+                           }
                            break;
                        case 6:
+//                           if(completedAreas.contains("Diamond")){
+//                               System.out.println("You have already won this area! Choose another one.");
+//                               player.addAward("Diamond");
+//                               location = null;
+//                           }
+//                           else{
+//                               location = new Coal(player);
+//                           }
                            location = new Coal(player);
                            break;
 

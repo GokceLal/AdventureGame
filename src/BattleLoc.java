@@ -20,24 +20,6 @@ public class BattleLoc extends Location{
     }
 
 
-//
-//    public boolean hasEnteredArea(){
-//        HashMap<String, Integer> areas = new HashMap<>();
-//        areas.put("SafeHouse", 1);
-//        areas.put("ToolStore", 2);
-//        areas.put("Cave", 3);
-//        areas.put("Forest", 4);
-//        areas.put("River", 5);
-//
-//        int areaNumber = areas.get(this.getName());
-//        if (areaNumber == 1 || areaNumber == 2 || areaNumber == 3 || areaNumber == 4 || areaNumber == 5){
-//            System.out.println("You entered " + this.getName());
-//            return true;
-//        }
-//
-//
-//        return true;
-//    }
     public void isAreaWin(int obsNum) {
         if (obsNum == 0){
             System.out.println("This area have " +obsNum+ " you  killed them" );
@@ -59,6 +41,7 @@ public class BattleLoc extends Location{
 
                 System.out.println(this.getName() + " you win ");
             this.isWin = true;
+
             if(selectCase.equals("L")||!combat(obsNumber)){
                 System.out.println("You left the battle.");
                 return false;
@@ -76,33 +59,38 @@ public class BattleLoc extends Location{
         return true;
     }
 
+
+
     public boolean combat(int obsNumber){
+
 
         for (int i = 1;  i <= obsNumber; i++) {
             this.getObstacle().setHealth(this.getObstacle().getOrjinalHealth());
             playerStarts();
             obstacleStarts(i);
+            System.out.println("Your chance of hitting first is 50 percent. The chance of the other side hitting first is 50 percent.");
+            Random random = new Random();
+            boolean yourChange = random.nextBoolean();
+            System.out.println(yourChange ? "You attack first" : "The enemy attacks first!");
             while(this.getPlayer().getHealthy() > 0 && this.getObstacle().getHealth() > 0){
                 System.out.print("<B> Battle or <L> Leave : ");
                 String selectCombat = input.next().toUpperCase();
                 if(selectCombat.equals("B")){
-                    System.out.println("You kicked");
-                    this.obstacle.setHealth(this.obstacle.getHealth() - this.getPlayer().getTotalDamage());
-                    afterHit();
-                    if(this.getObstacle().getHealth() > 0){
-                        System.out.println();
-                        System.out.println("Enemy hit you ");
-                        int obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
-                        if(obstacleDamage < 0){
-                            obstacleDamage = 0;
+                    if(yourChange){
+                        youHit();
+                        if (this.getObstacle().getHealth() > 0) {
+                            enemyHit();
                         }
-                        this.getPlayer().setHealthy(this.getPlayer().getHealthy() - obstacleDamage);
-                        afterHit();
                     }
+                    if(!yourChange){
+                        enemyHit();
+                        if (this.getPlayer().getHealthy() > 0) {
+                            youHit();
+                        }
+                    }
+
                 }
-                else {
-                    return false;
-                }
+
             }
             if(this.getObstacle().getHealth() < this.getPlayer().getHealthy()){
                 System.out.println("Enemy failed");
@@ -118,6 +106,7 @@ public class BattleLoc extends Location{
                 this.getPlayer().setMoney(this.getPlayer().getMoney() - this.getObstacle().getAward());
                 System.out.println("Your total money "+ this.getPlayer().getMoney());
                 System.out.println("You lose this area " );
+                return false;
 
 
 
@@ -127,6 +116,25 @@ public class BattleLoc extends Location{
             }
         }
         return true;
+    }
+
+    public void youHit(){
+        System.out.println("You kicked");
+        this.obstacle.setHealth(this.obstacle.getHealth() - this.getPlayer().getTotalDamage());
+        if(this.getPlayer().getHealthy() < 0){
+            this.getPlayer().setHealthy(0);
+        }
+        afterHit();
+    }
+
+    public void enemyHit(){
+        System.out.println("Enemy hit you ");
+        int obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
+        if(obstacleDamage < 0){
+            obstacleDamage = 0;
+        }
+        this.getPlayer().setHealthy(this.getPlayer().getHealthy() - obstacleDamage);
+        afterHit();
     }
 
     public void afterHit(){

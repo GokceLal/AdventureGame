@@ -1,13 +1,5 @@
 public class Inventory {
-   // private int weaponDamage;
-    // private String weaponName;
 
-
-   // public Inventory(int weaponDamage, String weaponName) {
-     //   this.weaponDamage = 0;
-       // this.weaponName = "Punch"; //Yumruk
-
-    //}
 
     private Weapon weapon;
     private Armor armor;

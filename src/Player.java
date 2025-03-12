@@ -1,4 +1,6 @@
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Player {
     private int damage;
@@ -10,9 +12,12 @@ public class Player {
     private Scanner input = new Scanner(System.in);
     private Inventory inventory;
 
+    private Set<String> wonAwards;
+
     public Player(String name){
         this.name = name;
         this.inventory = new Inventory();
+        this.wonAwards = new HashSet<>();
     }
 
     public void selectChar() {
@@ -135,4 +140,19 @@ public class Player {
     public void setOrjinalHealth(int orjinalHealth) {
         this.orjinalHealth = orjinalHealth;
     }
+
+
+
+    public String getWonAwards() {
+
+        if (wonAwards.isEmpty()) {
+            return "No awards won yet.";
+        }
+        return "Won Awards: " + String.join(", ", wonAwards);
+    }
+
+    public void addAward(String award) {
+        wonAwards.add(award);
+    }
+
 }
